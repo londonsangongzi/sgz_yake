@@ -56,7 +56,8 @@ test_requirements = [
 ]
 
 setup(
-    name='yake',
+    #name='yake',
+    name='sgz_yake',
     version='0.4.4',
     description="Keyword extraction Python package",
     long_description=readme,
