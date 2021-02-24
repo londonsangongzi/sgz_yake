@@ -1,6 +1,6 @@
-from segtok.segmenter import split_multi
-from segtok.tokenizer import web_tokenizer, split_contractions
-
+#from segtok.segmenter import split_multi
+#from segtok.tokenizer import web_tokenizer, split_contractions
+import syntok.segmenter as segmenter
 import networkx as nx
 import numpy as np
 import string
@@ -47,7 +47,18 @@ class DataCore(object):
     # Build the datacore features
     def _build(self, text, windowsSize, n):
         text = self.pre_filter(text)
-        self.sentences_str = [ [w for w in split_contractions(web_tokenizer(s)) if not (w.startswith("'") and len(w) > 1) and len(w) > 0] for s in list(split_multi(text)) if len(s.strip()) > 0]
+        #self.sentences_str = [ [w for w in split_contractions(web_tokenizer(s)) if not (w.startswith("'") and len(w) > 1) and len(w) > 0] for s in list(split_multi(text)) if len(s.strip()) > 0]
+        self.sentences_str = []
+        for paragraph in segmenter.process(text):
+            for sentence in paragraph:
+                sen = []
+                for token in sentence:
+                    # exactly reproduce the input
+                    # and do not remove "imperfections"
+                    #print(token.spacing, token.value, sep='', end='') 
+                    sen.append(token.value)   
+                self.sentences_str.append(sen)
+
         self.number_of_sentences = len(self.sentences_str)
         pos_text = 0
         block_of_word_obj = []
