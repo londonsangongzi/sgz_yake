@@ -42,7 +42,7 @@ requirements = [
     'tabulate',
     'click>=6.0',
     "numpy",
-    "segtok",
+    #"segtok",
     "syntok",
     "networkx",
     "jellyfish"]
@@ -58,18 +58,24 @@ test_requirements = [
 
 setup(
     #name='yake',
-    name='sgz_yake',
+    #name='sgz_yake',#pip install <distribution name>发布名称会变为'sgz-yake'
+    name='sgz-yake',
     version='0.4.4',
     description="Keyword extraction Python package",
     long_description=readme,
     long_description_content_type='text/markdown',    
     url='https://pypi.python.org/pypi/yake',
-    packages=find_packages(include=['yake','StopwordsList']),
-    entry_points={
-        'console_scripts': [
-            'yake=yake.cli:keywords'
-        ]
-    },
+    packages=find_packages(include=['sgz_yake','StopwordsList']),#通配符find_packages(include=["peony*"])
+    #'console_scripts': ['my-command=exampleproject.example:main']
+    #   会生成一个exe
+    #   my-command from the command line, which will execute the main function inside exampleproject/example.py.
+
+    #entry_points={
+    #    'console_scripts': [  
+    #        'yake=yake.cli:keywords'
+    #    ]
+    #},
+
     license="LGPLv3",
     include_package_data=True,
     install_requires=requirements,

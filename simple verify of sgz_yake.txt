@@ -1,0 +1,26 @@
+
+import yake
+import sgz_yake as yake2
+
+language = "en"
+max_ngram_size = 3
+deduplication_thresold = 0.9 
+deduplication_algo = 'seqm'
+windowSize = 1 
+numOfKeywords = 10
+
+text="""Everything Is Working. But it's being led by just five stocks. This was the narrative as the market was bouncing in March and April and even into May. That narrative wasn't necessarily wrong at the time, and yes, I was a part of the chorus, but that narrative no longer reflects reality."""
+
+custom_kw_extractor = yake.KeywordExtractor(lan=language, n=max_ngram_size, dedupLim=deduplication_thresold, dedupFunc=deduplication_algo, windowsSize=windowSize, top=numOfKeywords, features=None)
+keys = custom_kw_extractor.extract_keywords(text)
+keys = [key[0] for key in keys if float(key[1])>0.0]
+
+custom_kw_extractor2 = yake2.KeywordExtractor(lan=language, n=max_ngram_size, dedupLim=deduplication_thresold, dedupFunc=deduplication_algo, windowsSize=windowSize, top=numOfKeywords, features=None)
+keys2 = custom_kw_extractor2.extract_keywords(text)
+keys2 = [key[0] for key in keys2 if float(key[1])>0.0]
+
+
+>>> keys
+['working', 'march and april', 'narrative', 'bouncing in march', 'longer reflects reality', 'may. that narrative', 'reflects reality', 'march', 'april', 'may.']
+>>> keys2
+['working', 'march and april', 'narrative', 'bouncing in march', 'march', 'april', 'stocks', 'market was bouncing', 'reflects reality', 'led']
