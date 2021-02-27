@@ -77,7 +77,7 @@ setup(
     #},
 
     license="LGPLv3",
-    include_package_data=True,
+    include_package_data=True,#Accept all data files and directories matched by MANIFEST.in
     install_requires=requirements,
     zip_safe=False,
     keywords='yake',
