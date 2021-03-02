@@ -43,7 +43,8 @@ requirements = [
     'click>=6.0',
     "numpy",
     #"segtok",
-    "syntok",
+    #"syntok",
+    "nltk",
     "networkx",
     "jellyfish"]
 

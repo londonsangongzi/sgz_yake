@@ -1,8 +1,7 @@
 tabulate
 pytest
 flake8
-segtok
-syntok
+nltk
 jellyfish
 networkx
 numpy
