@@ -30,12 +30,38 @@ deduplication_algo = 'seqm'
 windowSize = 1 
 numOfKeywords = 10
 
+#"""
 #text="""Everything Is Working. But it's being led by just five stocks. This was the narrative as the market was bouncing in March and April and even into May. That narrative wasn't necessarily wrong at the time, and yes, I was a part of the chorus, but that narrative no longer reflects reality."""
 #text="""The Mail is saying that the SD holiday will definitely not be extended. Maybe Sunak has realised that he has created an even worse situation by doing what he did. Maybe he also realises that he is open to accusations of corruption by being seen to stoke an asset class that he has a lot of money invested in. Wouldn't normally stop a Tory, but I think he is actually a reasonably decent man. We will see. Fatso might sit on him and make him extend it after all. Quote. A source added that Mr Sunak has also rejected calls to extend the stamp duty holiday. Https://www.dailymail.co.uk/news/article-9128309/Rishi-Sunak-delay-tax-rises-autumn-end-Stamp-Duty-holiday-March.html"""
+text="""I want to share a quick story on how investor appetite changes.
+Today we’re going to be looking at USMV, the iShares min-vol factor ETF.
+From the launch in late 2011 up through February of last year, money poured in, passing $40 billion. It was one of the top 20 ETFs by assets.
+The story was a good one. Equity returns with a smoother ride. And it worked…
+…The standard deviation was 10%, compared with 17% for the S&P 500. And with one minor exception in 2016, it had lower drawdowns than the S&P 500 every time a pullback came around. In December 2018, it fell less than 13% from its high, compared to a 20% drop for the S&P 500. Not bad at all…
+…But then, when the real test came in 2020, this strategy did not shield investors from the selloff. They got all of the downside…
+…And worse, when the market recovered, they didn’t get nearly as much as the upside…
+…Driving relative performance to a 10-year low…
+…And investors running for the hills. In terms of total return, the strategy is just 1.3% below its highs, but assets are nearly 30% below where they were a year ago…
+…Because the last thing investors want in a rip-roaring bull market is low volatility. Between Spacs and meme stocks and small stocks and Bitcoin, boring is out of fashion.
+Min-vol will have its day in the sun again, but right now, investors want max vol."""
 
+custom_kw_extractor = yake.KeywordExtractor(lan=language, n=max_ngram_size, dedupLim=deduplication_thresold, dedupFunc=deduplication_algo, windowsSize=windowSize, top=numOfKeywords, features=None)
+keys = custom_kw_extractor.extract_keywords(text)
+keys = [key[0] for key in keys if float(key[1])>0.0]
+print('\norgin yake:\n',keys)
+#['working', 'march and april', 'narrative', 'bouncing in march', 'longer reflects reality', 'may. that narrative', 'reflects reality', 'march', 'april', 'may.']
+
+custom_kw_extractor2 = yake2.KeywordExtractor(lan=language, n=max_ngram_size, dedupLim=deduplication_thresold, dedupFunc=deduplication_algo, windowsSize=windowSize, top=numOfKeywords, features=None)
+keys2 = custom_kw_extractor2.extract_keywords(text)
+keys2 = [key[0] for key in keys2 if float(key[1])>0.0]
+print('\nnew yake:\n',keys2)
+#['working', 'march and april', 'narrative', 'bouncing in march', 'march', 'april', 'stocks', 'market was bouncing', 'reflects reality', 'led']
+#"""
+
+######################################################################################
 
 #==============  检测token划分精准度  =============
-#"""
+"""
 text="2010-02-18, hello-world_1981, jeff_susan-charlie@hotmail.com, Let's meet U.S.A. at 14.10 in N.Y.! \
 This happened in the U.S. last week. no-deal legislation... In March and April and even into May.! \
 They Want Max vol. 'Min-vol will have its day in the sun again, but right now, investors want max vol?' \
@@ -74,15 +100,6 @@ doc = nlp_senlist(text)
 #print(sen_list)
 sentence_tokens = [[token.text for token in sent] for sent in doc.sents]
 print(sentence_tokens)
-"""
-import spacy
-nlp = spacy.load("en_core_web_sm")
-doc = nlp(text)
-tokens=[]
-for token in doc:
-    tokens.append(token.text)  
-print(tokens) 
-"""
 
 #nltk不同标记器的优势 MosesTokenizer ToktokTokenizer word_tokenize
 #   word_tokenize()隐式调用sent_tokenize()
@@ -112,23 +129,10 @@ from nltk.tokenize import TweetTokenizer
 tweettok = TweetTokenizer()
 tokens = [tweettok.tokenize(sentence) for sentence in nltk.sent_tokenize(text)]
 print(tokens)
-#"""
+"""
 #==============  检测token划分精准度  =============
 
 
-######################################################################################
 
-"""
-custom_kw_extractor = yake.KeywordExtractor(lan=language, n=max_ngram_size, dedupLim=deduplication_thresold, dedupFunc=deduplication_algo, windowsSize=windowSize, top=numOfKeywords, features=None)
-keys = custom_kw_extractor.extract_keywords(text)
-keys = [key[0] for key in keys if float(key[1])>0.0]
-print('\norgin yake:\n',keys)
-#['working', 'march and april', 'narrative', 'bouncing in march', 'longer reflects reality', 'may. that narrative', 'reflects reality', 'march', 'april', 'may.']
 
-custom_kw_extractor2 = yake2.KeywordExtractor(lan=language, n=max_ngram_size, dedupLim=deduplication_thresold, dedupFunc=deduplication_algo, windowsSize=windowSize, top=numOfKeywords, features=None)
-keys2 = custom_kw_extractor2.extract_keywords(text)
-keys2 = [key[0] for key in keys2 if float(key[1])>0.0]
-print('\nnew yake:\n',keys2)
-#['working', 'march and april', 'narrative', 'bouncing in march', 'march', 'april', 'stocks', 'market was bouncing', 'reflects reality', 'led']
-"""
 

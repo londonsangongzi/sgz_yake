@@ -1,7 +1,9 @@
 #from segtok.segmenter import split_multi
 #from segtok.tokenizer import web_tokenizer, split_contractions
-import syntok.segmenter as segmenter
+#import syntok.segmenter as segmenter
 #by default considers underscores and Unicode hyphens inside words as spacing characters (not Token values)
+import nltk
+from nltk.tokenize.toktok import ToktokTokenizer
 
 import networkx as nx
 import numpy as np
@@ -16,6 +18,7 @@ STOPWORD_WEIGHT = 'bi'
 class DataCore(object):
     
     def __init__(self, text, stopword_set, windowsSize, n, tagsToDiscard = set(['u', 'd']), exclude = set(string.punctuation)):
+        self.toktok = ToktokTokenizer()
         self.number_of_sentences = 0
         self.number_of_words = 0
         self.terms = {}
@@ -49,7 +52,11 @@ class DataCore(object):
     # Build the datacore features
     def _build(self, text, windowsSize, n):
         text = self.pre_filter(text)
+        #------  origin yake  ------
         #self.sentences_str = [ [w for w in split_contractions(web_tokenizer(s)) if not (w.startswith("'") and len(w) > 1) and len(w) > 0] for s in list(split_multi(text)) if len(s.strip()) > 0]
+
+        #------ segtok-->syntok 效果不好------
+        """
         self.sentences_str = []
         for paragraph in segmenter.process(text):
             for sentence in paragraph:
@@ -60,6 +67,9 @@ class DataCore(object):
                     #print(token.spacing, token.value, sep='', end='') 
                     sen.append(token.value)   
                 self.sentences_str.append(sen)
+        """
+        #------ segtok-->nltk toktok ------
+        self.sentences_str = [self.toktok.tokenize(sentence) for sentence in nltk.sent_tokenize(text)]
 
         self.number_of_sentences = len(self.sentences_str)
         pos_text = 0
