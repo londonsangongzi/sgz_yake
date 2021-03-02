@@ -1,6 +1,8 @@
 #from segtok.segmenter import split_multi
 #from segtok.tokenizer import web_tokenizer, split_contractions
 import syntok.segmenter as segmenter
+#by default considers underscores and Unicode hyphens inside words as spacing characters (not Token values)
+
 import networkx as nx
 import numpy as np
 import string
@@ -28,7 +30,7 @@ class DataCore(object):
             self.freq_ns[i+1] = 0.
         self.stopword_set = stopword_set
         self._build(text, windowsSize, n)
-
+    """
     def build_candidate(self, candidate_string):
         sentences_str = [w for w in split_contractions(web_tokenizer(candidate_string.lower())) if not (w.startswith("'") and len(w) > 1) and len(w) > 0]
         candidate_terms = []
@@ -43,7 +45,7 @@ class DataCore(object):
             return invalid_virtual_cand
         virtual_cand = composed_word(candidate_terms)
         return virtual_cand
-
+    """
     # Build the datacore features
     def _build(self, text, windowsSize, n):
         text = self.pre_filter(text)
