@@ -4,6 +4,8 @@
 #by default considers underscores and Unicode hyphens inside words as spacing characters (not Token values)
 import nltk
 from nltk.tokenize.toktok import ToktokTokenizer
+from spacy.lang.en import English
+import sys
 
 import networkx as nx
 import numpy as np
@@ -19,6 +21,10 @@ class DataCore(object):
     
     def __init__(self, text, stopword_set, windowsSize, n, tagsToDiscard = set(['u', 'd']), exclude = set(string.punctuation)):
         self.toktok = ToktokTokenizer()
+        self.nlp_senlist = English()
+        sentencizer = self.nlp_senlist.create_pipe("sentencizer")
+        self.nlp_senlist.add_pipe(sentencizer)
+
         self.number_of_sentences = 0
         self.number_of_words = 0
         self.terms = {}
@@ -49,6 +55,37 @@ class DataCore(object):
         virtual_cand = composed_word(candidate_terms)
         return virtual_cand
     """
+    def sentencizer_nltk_spacy(self,text):
+        text_left = text.strip()
+        sentences = []
+        if len(text_left)==0:
+            return sentences
+
+        while(len(text_left)>0):
+            sen_nltk = nltk.sent_tokenize(text_left)
+            doc_spacy = self.nlp_senlist(text_left)
+            sen_spacy = [sent.string.strip() for sent in doc_spacy.sents]
+
+            if len(sen_nltk)==len(sen_spacy) and sen_nltk==sen_spacy:
+                sentences += sen_nltk
+                break
+            else:
+                for i in range(min(len(sen_nltk),len(sen_spacy))):
+                    if sen_nltk[i]==sen_spacy[i]:
+                        sentences.append(sen_nltk[i])
+                        text_left = ' '.join(sen_nltk[i+1:])
+                    elif sen_nltk[i] in sen_spacy[i]:
+                        sentences.append(sen_nltk[i])
+                        text_left = ' '.join(sen_nltk[i+1:])
+                        break
+                    elif sen_spacy[i] in sen_nltk[i]:
+                        sentences.append(sen_spacy[i])
+                        text_left = ' '.join(sen_spacy[i+1:])
+                        break
+                    else:
+                        sys.exit("sgz_yake sentencizer_nltk_spacy() error!")    
+        return sentences    
+
     # Build the datacore features
     def _build(self, text, windowsSize, n):
         text = self.pre_filter(text)
@@ -68,8 +105,11 @@ class DataCore(object):
                     sen.append(token.value)   
                 self.sentences_str.append(sen)
         """
-        #------ segtok-->nltk toktok ------
-        self.sentences_str = [self.toktok.tokenize(sentence) for sentence in nltk.sent_tokenize(text)]
+        #------ nltk toktok 存在部分句子无法识别------
+        #self.sentences_str = [self.toktok.tokenize(sentence) for sentence in nltk.sent_tokenize(text)]
+
+        #------ sentence by space & nltk, word by toktok -------
+        self.sentences_str = [self.toktok.tokenize(sen) for sen in self.sentencizer_nltk_spacy(text)]
 
         self.number_of_sentences = len(self.sentences_str)
         pos_text = 0

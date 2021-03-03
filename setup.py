@@ -45,6 +45,7 @@ requirements = [
     #"segtok",
     #"syntok",
     "nltk",
+    "spacy",
     "networkx",
     "jellyfish"]
 
