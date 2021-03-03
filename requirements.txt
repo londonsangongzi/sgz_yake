@@ -2,7 +2,6 @@ tabulate
 pytest
 flake8
 nltk
-spacy
 jellyfish
 networkx
 numpy
