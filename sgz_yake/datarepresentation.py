@@ -1,10 +1,7 @@
 #from segtok.segmenter import split_multi
 #from segtok.tokenizer import web_tokenizer, split_contractions
-#import syntok.segmenter as segmenter
-#by default considers underscores and Unicode hyphens inside words as spacing characters (not Token values)
+#import syntok.segmenter as segmenter #by default considers underscores and Unicode hyphens inside words as spacing characters (not Token values)
 import nltk
-from nltk.tokenize.toktok import ToktokTokenizer
-from spacy.lang.en import English
 import sys
 
 import networkx as nx
@@ -19,11 +16,9 @@ STOPWORD_WEIGHT = 'bi'
 
 class DataCore(object):
     
-    def __init__(self, text, stopword_set, windowsSize, n, tagsToDiscard = set(['u', 'd']), exclude = set(string.punctuation)):
-        self.toktok = ToktokTokenizer()
-        self.nlp_senlist = English()
-        sentencizer = self.nlp_senlist.create_pipe("sentencizer")
-        self.nlp_senlist.add_pipe(sentencizer)
+    def __init__(self, toktok_tokenizer,spacy_nlp_senlist,text, stopword_set, windowsSize, n, tagsToDiscard=set(['u','d']), exclude=set(string.punctuation)):
+        self.toktok = toktok_tokenizer
+        self.nlp_senlist = spacy_nlp_senlist
 
         self.number_of_sentences = 0
         self.number_of_words = 0

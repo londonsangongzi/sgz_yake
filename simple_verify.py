@@ -61,10 +61,10 @@ deduplication_algo = 'seqm'
 windowSize = 1 
 numOfKeywords = 10
 
-"""
+#"""
 #text="Everything Is Working. But it's being led by just five stocks. This was the narrative as the market was bouncing in March and April and even into May. That narrative wasn't necessarily wrong at the time, and yes, I was a part of the chorus, but that narrative no longer reflects reality."
-#text="The Mail is saying that the SD holiday will definitely not be extended. Maybe Sunak has realised that he has created an even worse situation by doing what he did. Maybe he also realises that he is open to accusations of corruption by being seen to stoke an asset class that he has a lot of money invested in. Wouldn't normally stop a Tory, but I think he is actually a reasonably decent man. We will see. Fatso might sit on him and make him extend it after all. Quote. A source added that Mr Sunak has also rejected calls to extend the stamp duty holiday. Https://www.dailymail.co.uk/news/article-9128309/Rishi-Sunak-delay-tax-rises-autumn-end-Stamp-Duty-holiday-March.html"
-text="Real-Time Option Data Feed? Hey r/algotrading, In the past few months I've developed a strategy to scalp naked calls/puts that relies on scanning over at-least 10,000+ feeds of options simultaneously (based on my backtests).For historical data I've used IQFeed but sadly they can only provide up to 500 options simutaniously which is enough for my scanner to pick up trades. I'm looking for a real time data-feed provider capable of such high throughput providing NBBO/quote ticks and trade ticks. And so I wonder if any of you folks know of any worthy mentions tl;dr i need a bloody options data feed provider that won't rip my wallet in monthly fees. submitted by /u/nucses [link] [comments]"
+text="The Mail is saying that the SD holiday will definitely not be extended. Maybe Sunak has realised that he has created an even worse situation by doing what he did. Maybe he also realises that he is open to accusations of corruption by being seen to stoke an asset class that he has a lot of money invested in. Wouldn't normally stop a Tory, but I think he is actually a reasonably decent man. We will see. Fatso might sit on him and make him extend it after all. Quote. A source added that Mr Sunak has also rejected calls to extend the stamp duty holiday. Https://www.dailymail.co.uk/news/article-9128309/Rishi-Sunak-delay-tax-rises-autumn-end-Stamp-Duty-holiday-March.html"
+#text="Real-Time Option Data Feed? Hey r/algotrading, In the past few months I've developed a strategy to scalp naked calls/puts that relies on scanning over at-least 10,000+ feeds of options simultaneously (based on my backtests).For historical data I've used IQFeed but sadly they can only provide up to 500 options simutaniously which is enough for my scanner to pick up trades. I'm looking for a real time data-feed provider capable of such high throughput providing NBBO/quote ticks and trade ticks. And so I wonder if any of you folks know of any worthy mentions tl;dr i need a bloody options data feed provider that won't rip my wallet in monthly fees. submitted by /u/nucses [link] [comments]"
 
 text=sgzUtils.filter_content(text)
 
@@ -79,7 +79,7 @@ keys2 = custom_kw_extractor2.extract_keywords(text)
 keys2 = [key[0] for key in keys2 if float(key[1])>0.0]
 print('\nnew yake:\n',keys2)
 #['working', 'march and april', 'narrative', 'bouncing in march', 'march', 'april', 'stocks', 'market was bouncing', 'reflects reality', 'led']
-"""
+#"""
 
 ######################################################################################
 
@@ -94,7 +94,7 @@ TOKTOK_REGEXES_PATCH = [
 #       This instance has already been trained and works well for many European languages. 
 #       So it knows what punctuation and characters mark the end of a sentence and the beginning of a new sentence.
 #   word token: nltk toktok最符合要求 2021.3.2 限制：句子结尾只认1个标点
-#"""
+"""
 #backslash works as a line continuation character in Python
 text="All prone to end up in poverty if they fall ill. \
 2010-02-18, hello-world_1981, jeff_susan-charlie@hotmail.com, Let's meet U.S.A. at 14.10 in N.Y.! \
@@ -188,7 +188,7 @@ tokens = [mt.tokenize(sen) for sen in sentences]
 print(len(tokens),'\n',tokens)
 
 
-#"""
+"""
 #==============  检测token划分精准度  =============
 
 

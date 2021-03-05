@@ -2,6 +2,9 @@
 
 """Main module."""
 
+from nltk.tokenize.toktok import ToktokTokenizer
+from spacy.lang.en import English
+
 import string
 import os
 import jellyfish
@@ -12,6 +15,11 @@ from .datarepresentation import DataCore
 class KeywordExtractor(object):
 
     def __init__(self, lan="en", n=3, dedupLim=0.9, dedupFunc='seqm', windowsSize=1, top=20, features=None, stopwords=None):
+        self.toktok = ToktokTokenizer()
+        self.nlp_senlist = English()
+        sentencizer = self.nlp_senlist.create_pipe("sentencizer")
+        self.nlp_senlist.add_pipe(sentencizer)
+
         self.lan = lan
 
         dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -57,7 +65,7 @@ class KeywordExtractor(object):
 
     def extract_keywords(self, text):
         text = text.replace('\n\t',' ')
-        dc = DataCore(text=text, stopword_set=self.stopword_set, windowsSize=self.windowsSize, n=self.n)
+        dc = DataCore(toktok_tokenizer=self.toktok,spacy_nlp_senlist=self.nlp_senlist,text=text, stopword_set=self.stopword_set, windowsSize=self.windowsSize, n=self.n)
         dc.build_single_terms_features(features=self.features)
         dc.build_mult_terms_features(features=self.features)
         resultSet = []
