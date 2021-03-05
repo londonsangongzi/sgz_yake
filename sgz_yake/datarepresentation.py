@@ -61,10 +61,14 @@ class DataCore(object):
         if len(text_left)==0:
             return sentences
 
+        b_nltk = True #需要重新计算
+        b_spacy = True
         while(len(text_left)>0):
-            sen_nltk = nltk.sent_tokenize(text_left)
-            doc_spacy = self.nlp_senlist(text_left)
-            sen_spacy = [sent.string.strip() for sent in doc_spacy.sents]
+            if b_nltk:
+                sen_nltk = nltk.sent_tokenize(text_left)
+            if b_spacy:
+                doc_spacy = self.nlp_senlist(text_left)
+                sen_spacy = [sent.string.strip() for sent in doc_spacy.sents]
 
             if len(sen_nltk)==len(sen_spacy) and sen_nltk==sen_spacy:
                 sentences += sen_nltk
@@ -77,10 +81,16 @@ class DataCore(object):
                     elif sen_nltk[i] in sen_spacy[i]:
                         sentences.append(sen_nltk[i])
                         text_left = ' '.join(sen_nltk[i+1:])
+                        b_nltk = False
+                        b_spacy = True
+                        sen_nltk = sen_nltk[i+1:]
                         break
                     elif sen_spacy[i] in sen_nltk[i]:
                         sentences.append(sen_spacy[i])
                         text_left = ' '.join(sen_spacy[i+1:])
+                        b_nltk = True
+                        b_spacy = False
+                        sen_spacy = sen_spacy[i+1:]                        
                         break
                     else:
                         sys.exit("sgz_yake sentencizer_nltk_spacy() error!")    
